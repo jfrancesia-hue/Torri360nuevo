@@ -61,7 +61,7 @@ export class UploadsService {
     return { data: attachment };
   }
 
-  async deleteAttachment(tenantId: string, attachmentId: string, user: UserPayload) {
+  async deleteAttachment(tenantId: string, attachmentId: string, _user: UserPayload) {
     const attachment = await this.prisma.attachment.findFirst({
       where: { id: attachmentId, ticket: { tenantId } },
     });

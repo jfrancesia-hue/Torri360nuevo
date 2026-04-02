@@ -2,7 +2,6 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
-  ForbiddenException,
 } from '@nestjs/common';
 import { Prisma } from '@toori360/db';
 import { PrismaService } from '../../prisma/prisma.service';

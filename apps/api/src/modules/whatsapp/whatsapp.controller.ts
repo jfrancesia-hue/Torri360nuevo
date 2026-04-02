@@ -11,7 +11,7 @@ export class WhatsappController {
   // Meta webhook verification
   @Get('webhook/:tenantId')
   verify(
-    @Param('tenantId') tenantId: string,
+    @Param('tenantId') _tenantId: string,
     @Query('hub.mode') mode: string,
     @Query('hub.verify_token') token: string,
     @Query('hub.challenge') challenge: string,

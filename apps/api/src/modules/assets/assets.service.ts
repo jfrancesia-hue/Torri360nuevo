@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { AssetStatus } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
@@ -95,7 +96,7 @@ export class AssetsService {
       data: {
         name: dto.name,
         type: dto.type,
-        status: dto.status,
+        status: dto.status as AssetStatus | undefined,
         brand: dto.brand,
         model: dto.model,
         notes: dto.notes,
