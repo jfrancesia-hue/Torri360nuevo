@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { AssetStatus } from '@prisma/client';
+import { AssetStatus } from '@toori360/db';
 import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
