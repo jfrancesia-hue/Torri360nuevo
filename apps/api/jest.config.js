@@ -11,5 +11,6 @@ module.exports = {
   moduleNameMapper: {
     '^@toori360/shared$': '<rootDir>/../../../packages/shared/src/index.ts',
     '^@toori360/db$': '<rootDir>/../../../packages/db/src/index.ts',
+    '^@prisma/client(.*)$': '<rootDir>/../../../packages/db/node_modules/@prisma/client$1',
   },
 };
