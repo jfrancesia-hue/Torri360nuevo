@@ -26,7 +26,6 @@
     "@toori360/db": "workspace:*",
     "@toori360/shared": "workspace:*",
     "@nestjs/bull": "^10.2.1",
-    "@nestjs/multer": "^2.0.0",
     "@nestjs/schedule": "^4.1.1",
     "resend": "^4.0.0",
     "@supabase/supabase-js": "^2.45.4",
