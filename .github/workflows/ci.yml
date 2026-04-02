@@ -27,6 +27,9 @@ jobs:
       - name: Build shared packages
         run: pnpm turbo build --filter=@toori360/shared --filter=@toori360/db
 
+      - name: Generate Prisma client
+        run: pnpm --filter @toori360/db db:generate
+
       - name: Typecheck
         run: pnpm turbo typecheck
 
