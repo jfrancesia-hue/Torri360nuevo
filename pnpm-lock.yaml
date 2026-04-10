@@ -340,7 +340,7 @@ importers:
   packages/db:
     dependencies:
       '@prisma/client':
-        specifier: ^5.19.1
+        specifier: 5.22.0
         version: 5.22.0(prisma@5.22.0)
       '@toori360/shared':
         specifier: workspace:*
@@ -356,7 +356,7 @@ importers:
         specifier: ^22.0.0
         version: 22.19.15
       prisma:
-        specifier: ^5.19.1
+        specifier: 5.22.0
         version: 5.22.0
       ts-node:
         specifier: ^10.9.2
