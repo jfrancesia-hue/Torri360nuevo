@@ -13,7 +13,7 @@
     "dev:mobile": "turbo run dev --filter=mobile",
     "build": "turbo run build",
     "build:web": "turbo run build --filter=web",
-    "build:api": "turbo run build --filter=api",
+    "build:api": "turbo run build --filter=api...",
     "test": "turbo run test",
     "test:api": "turbo run test --filter=api",
     "test:web": "turbo run test --filter=web",
