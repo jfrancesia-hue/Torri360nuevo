@@ -85,59 +85,78 @@ export class AuthService {
   }
 
   async login(dto: LoginDto) {
-    const user = await this.prisma.user.findFirst({
-      where: {
-        email: dto.email,
-        status: 'ACTIVE',
-      },
-      include: { tenant: true },
-    });
-
-    if (!user || !user.passwordHash) {
-      throw new UnauthorizedException('Credenciales inválidas');
-    }
-
-    const passwordValid = await bcrypt.compare(dto.password, user.passwordHash);
-    if (!passwordValid) {
-      throw new UnauthorizedException('Credenciales inválidas');
-    }
-
-    if (user.tenant.status === 'SUSPENDED') {
-      throw new UnauthorizedException('La cuenta está suspendida');
-    }
-
-    await this.prisma.user.update({
-      where: { id: user.id },
-      data: { lastLogin: new Date() },
-    });
-
-    const tokens = this.generateTokens(
-      user.id,
-      user.tenantId,
-      user.email,
-      user.role,
-      user.name,
-    );
-
-    return {
-      data: {
-        user: {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-          avatarUrl: user.avatarUrl,
+    try {
+      this.logger.debug(`Login attempt for email: ${dto.email}`);
+      
+      const user = await this.prisma.user.findFirst({
+        where: {
+          email: dto.email,
+          status: 'ACTIVE',
         },
-        tenant: {
-          id: user.tenant.id,
-          name: user.tenant.name,
-          slug: user.tenant.slug,
-          plan: user.tenant.plan,
+        include: { tenant: true },
+      });
+
+      if (!user) {
+        this.logger.warn(`Login failed: user not found for email ${dto.email}`);
+        throw new UnauthorizedException('Credenciales inválidas');
+      }
+
+      if (!user.passwordHash) {
+        this.logger.warn(`Login failed: user ${user.id} has no password hash`);
+        throw new UnauthorizedException('Credenciales inválidas');
+      }
+
+      const passwordValid = await bcrypt.compare(dto.password, user.passwordHash);
+      if (!passwordValid) {
+        this.logger.warn(`Login failed: invalid password for user ${user.id}`);
+        throw new UnauthorizedException('Credenciales inválidas');
+      }
+
+      if (user.tenant.status === 'SUSPENDED') {
+        this.logger.warn(`Login failed: tenant ${user.tenantId} is suspended`);
+        throw new UnauthorizedException('La cuenta está suspendida');
+      }
+
+      await this.prisma.user.update({
+        where: { id: user.id },
+        data: { lastLogin: new Date() },
+      });
+
+      const tokens = this.generateTokens(
+        user.id,
+        user.tenantId,
+        user.email,
+        user.role,
+        user.name,
+      );
+
+      this.logger.log(`Login successful for user ${user.id}`);
+      return {
+        data: {
+          user: {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+            avatarUrl: user.avatarUrl,
+          },
+          tenant: {
+            id: user.tenant.id,
+            name: user.tenant.name,
+            slug: user.tenant.slug,
+            plan: user.tenant.plan,
           logoUrl: user.tenant.logoUrl,
         },
         ...tokens,
       },
     };
+    } catch (error) {
+      this.logger.error(`Login error: ${error.message}`, error.stack);
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Error en el login. Por favor intenta de nuevo.');
+    }
   }
 
   async getMe(userId: string, tenantId: string) {
