@@ -10,8 +10,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "paths": {
-      "@toori360/shared": ["../../packages/shared/src"],
-      "@toori360/db": ["../../packages/db/src"]
+      "@toori360/shared": ["../../packages/shared/dist"],
+      "@toori360/db": ["../../packages/db/dist"]
     }
   },
   "include": ["src/**/*"],
