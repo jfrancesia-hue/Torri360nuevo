@@ -20,6 +20,7 @@ async function bootstrap() {
   const allowedOrigins = [
     process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
     process.env.PORTAL_URL,
+    'https://toori360-app.vercel.app',
     'http://localhost:3000',
     'http://localhost:3001',
   ].filter(Boolean) as string[];
