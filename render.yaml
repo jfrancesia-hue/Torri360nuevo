@@ -3,8 +3,8 @@ services:
     name: toori360-api
     runtime: node
     plan: free
-    buildCommand: pnpm install && cd packages/db && npx prisma generate && cd ../.. && pnpm build:api
-    startCommand: node apps/api/dist/main
+    buildCommand: pnpm install && pnpm db:generate && pnpm build:api
+    startCommand: node apps/api/dist/apps/api/src/main.js
     healthCheckPath: /api/v1/health
     envVars:
       - key: NODE_ENV
