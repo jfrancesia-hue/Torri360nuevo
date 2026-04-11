@@ -151,7 +151,9 @@ export class AuthService {
       },
     };
     } catch (error) {
-      this.logger.error(`Login error: ${error.message}`, error.stack);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorStack = error instanceof Error ? error.stack : undefined;
+      this.logger.error(`Login error: ${errorMessage}`, errorStack);
       if (error instanceof UnauthorizedException) {
         throw error;
       }
